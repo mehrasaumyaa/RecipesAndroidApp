@@ -3,6 +3,8 @@ package com.example.testapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +17,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     // URL to get contacts JSON
     private static String url = "http://comet.cs.brynmawr.edu/~zainabb/hw6-360/config.php";
 
-    ArrayList<HashMap<String, String>> recipeList;
+    ArrayList<HashMap<String, Object>> recipeList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,15 +87,42 @@ public class MainActivity extends AppCompatActivity {
                         String name = c.getString("name");
                         String mealType = c.getString("MealType");
                         String servings = c.getString("Servings");
+                        //String url_string = "https://source.unsplash.com/random";
+                        String url_string = c.getString("ImageLink");
+
+                        //convert to bitmap object then add that to recipe then create adapter
+                        InputStream in =null;
+                        Bitmap bmp=null;
+                        int responseCode = -1;
+                        try{
+
+                            URL url = new URL(url_string);//"http://192.xx.xx.xx/mypath/img1.jpg
+                            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+                            con.setDoInput(true);
+                            con.connect();
+                            responseCode = con.getResponseCode();
+                            if(responseCode == HttpURLConnection.HTTP_OK)
+                            {
+                                //download
+                                in = con.getInputStream();
+                                bmp = BitmapFactory.decodeStream(in);
+                                in.close();
+                            }
+
+                        }
+                        catch(Exception ex){
+                            Log.e("Exception",ex.toString());
+                        }
 
                         // tmp hash map for single recipe
-                        HashMap<String, String> recipe = new HashMap<>();
+                        HashMap<String, Object> recipe = new HashMap<>();
 
                         // adding each child node to HashMap key => value
                         recipe.put("RecipeId", id);
                         recipe.put("name", name);
                         recipe.put("MealType", mealType);
                         recipe.put("Servings", servings);
+                        recipe.put("Image", bmp);
 
                         // adding recipe to recipe list
                         recipeList.add(recipe);
@@ -134,11 +166,11 @@ public class MainActivity extends AppCompatActivity {
             /**
              * Updating parsed JSON data into ListView
              * */
-            ListAdapter adapter = new SimpleAdapter(
+            ExtendedSimpleAdapter adapter = new ExtendedSimpleAdapter(
                     MainActivity.this, recipeList,
                     R.layout.list_item, new String[]{"name", "MealType",
-                    "Servings"}, new int[]{R.id.name,
-                    R.id.email, R.id.mobile});
+                    "Servings", "Image"}, new int[]{R.id.name,
+                    R.id.email, R.id.mobile, R.id.dish_image});
 
             lv.setAdapter(adapter);
         }
