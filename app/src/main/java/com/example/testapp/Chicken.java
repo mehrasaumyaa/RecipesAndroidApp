@@ -1,9 +1,12 @@
 package com.example.testapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -33,9 +36,11 @@ public class Chicken extends AppCompatActivity {
 
     private String TAG = Chicken.class.getSimpleName();
     private ProgressDialog pDialog;
-    ListView stepsLV;
+    private ListView stepsLV;
     int rID;
     ArrayList<HashMap<String, Object>> stepsList;
+    public static final String EXTRA_MESSAGE ="com.example.testapp.extra.MESSAGE";
+    private String detailsText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +50,14 @@ public class Chicken extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
         rID = getIntent().getExtras().getInt("recipeId");
         Log.e("the ID", String.valueOf(rID));
 
-        stepsLV = (ListView)findViewById(R.id.stepList);
 
         stepsList = new ArrayList<>();
+        stepsLV = (ListView)findViewById(R.id.stepList);
+
         new GetSteps().execute();
 
     }
@@ -82,6 +89,7 @@ public class Chicken extends AppCompatActivity {
 
                         String id = c.getString("StepOrder");
                         String sum = c.getString("Summary");
+                        String det = c.getString("details");
 
                         // tmp hash map for single recipe
                         HashMap<String, Object> stepDetails = new HashMap<>();
@@ -89,6 +97,7 @@ public class Chicken extends AppCompatActivity {
                         // adding each child node to HashMap key => value
                         stepDetails.put("StepOrder", id);
                         stepDetails.put("Summary", sum);
+                        stepDetails.put("details", det);
 
                         // adding recipe to recipe list
                         stepsList.add(stepDetails);
@@ -137,6 +146,23 @@ public class Chicken extends AppCompatActivity {
                     R.id.summary});
 
             stepsLV.setAdapter(adapter);
+            Log.e("adapter set", "adapter set");
+
+            stepsLV.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int id , long l) {
+                    Log.e("bla","bla");
+                    String details =  String.valueOf(stepsList.get(id).get("details"));
+
+
+                    // Invoke new activity
+                    Intent intent2 = new Intent(Chicken.this, Details.class);
+                    intent2.putExtra("details", details);
+                    startActivity(intent2);
+                    //finish();
+//                    Toast.makeText(MainActivity.this, recipeId, Toast.LENGTH_LONG).show();
+                }
+            });
         }
 
     } // GetSteps
@@ -165,6 +191,12 @@ public class Chicken extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.e("bla2", "bla2");
         return sb.toString();
     }
+
+    //to do: depending on listview clicked here, use that number to get rleevant hashmap from array stepsList
+    //then get details from that hashmap
+    //use that to populate third screen
+    //alternately can create a new table for step_details then do it exactly like second screen
 }

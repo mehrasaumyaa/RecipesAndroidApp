@@ -193,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener(){
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int id , long l) {
+                    Log.e("click in main", "clikc in main");
                     String strId =  String.valueOf(recipeList.get(id).get("RecipeId"));
                     int recipeId = Integer.parseInt(strId);
 
