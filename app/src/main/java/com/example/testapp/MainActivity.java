@@ -101,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
                         String id = c.getString("RecipeID");
                         String name = c.getString("name");
-                        String mealType = c.getString("MealType");
-                        String servings = c.getString("Servings");
+                        String mealType = "Meal Type: "+ c.getString("MealType");
+                        String servings = "Servings: " + c.getString("Servings");
                         //String url_string = "https://source.unsplash.com/random";
                         String url_string = c.getString("ImageLink");
 
