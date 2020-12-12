@@ -228,6 +228,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, Chicken.class);
                     intent.putExtra("recipeId", recipeId);
                     intent.putExtra("name", name);
+//                    intent.putExtra("class", "Main");
                     startActivity(intent);
                     //finish();
 //                    Toast.makeText(MainActivity.this, recipeId, Toast.LENGTH_LONG).show();

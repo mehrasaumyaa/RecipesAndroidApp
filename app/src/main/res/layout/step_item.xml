@@ -23,6 +23,15 @@
         android:textColor="@color/purple_200"
         />
 
+<!--    <TextView-->
+<!--        android:id="@+id/status"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Not Started"-->
+<!--        android:textSize="16sp"-->
+<!--        android:textColor="@android:color/holo_blue_dark"-->
+<!--        android:textStyle="bold" />-->
 
     <Button
         android:id="@+id/Details"

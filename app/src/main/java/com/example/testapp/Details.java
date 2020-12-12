@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -21,8 +23,8 @@ public class Details extends AppCompatActivity {
     String details;
     String recipeName;
     int stepNum;
-
     private long startTime;    //in ms
+    private long endTime;
     private TextView timerTextView;
     private EditText inputTime;
     private Button setTimeButton;
@@ -33,11 +35,14 @@ public class Details extends AppCompatActivity {
     private long timeLeft = startTime;  //in ms
     private Button completedButton;
     private int stepsDone = 0;
+//    String status;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+//        status = "In Progress";
 
         // Get information from previous screen
         details = getIntent().getExtras().getString("details");
@@ -48,6 +53,7 @@ public class Details extends AppCompatActivity {
         TextView detailsTextView = (TextView) findViewById(R.id.textView);
         TextView nameTextView = findViewById(R.id.fooditem);
         TextView stepNumTextView = findViewById(R.id.step_num);
+        completedButton = findViewById(R.id.completed);
 
         // Set textviews
         detailsTextView.setText(details);
@@ -91,9 +97,18 @@ public class Details extends AppCompatActivity {
 
         // Call timer with user inputted time
         timerFunctionality();
+
         completedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+//                status = "Completed";
+//                Intent intent = new Intent(Details.this, Chicken.class);
+//                intent.putExtra("status", status);
+//                intent.putExtra("class", "Details");
+//                intent.putExtra("stepNum", stepNum);
+//                setResult(RESULT_OK, intent);
+
                 finish();
                 return;
             }
@@ -141,6 +156,8 @@ public class Details extends AppCompatActivity {
     }
 
     private void startTimer(){
+        endTime = System.currentTimeMillis() + timeLeft;
+
         countDownTimer = new CountDownTimer(timeLeft, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
@@ -197,4 +214,51 @@ public class Details extends AppCompatActivity {
         }
         timerTextView.setText(timeLeftFormatted);
     }
+
+//    private void updateButtons() {
+//        if (timerRunning) {
+//            startPauseTimer.setText("Pause Timer");
+//        } else {
+//            startPauseTimer.setText("Start Timer");
+//        }
+//    }
+    // Preserve state of timer
+    /*
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong("millisLeft", timeLeft);
+        editor.putBoolean("timerRunning", timerRunning);
+        editor.putLong("endTime", endTime);
+        editor.apply();
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences prefs = getSharedPreferences("prefs", MODE_PRIVATE);
+        timeLeft = prefs.getLong("millisLeft", startTime);
+        timerRunning = prefs.getBoolean("timerRunning", false);
+        updateTimerText();
+        updateButtons();
+        if (timerRunning) {
+            endTime = prefs.getLong("endTime", 0);
+            timeLeft = endTime - System.currentTimeMillis();
+            if (timeLeft < 0) {
+                timeLeft = 0;
+                timerRunning = false;
+                updateTimerText();
+                updateButtons();
+            } else {
+                startTimer();
+            }
+        }
+    }
+
+    */
 }

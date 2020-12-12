@@ -29,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -44,6 +45,9 @@ public class Chicken extends AppCompatActivity {
     private String detailsText;
     String recipeName;
     private int stepsDone = 0;
+//    TextView status;
+//    String statusText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,11 +63,40 @@ public class Chicken extends AppCompatActivity {
 
         stepsList = new ArrayList<>();
         stepsLV = (ListView)findViewById(R.id.stepList);
+/*
+        int completedStepNum = getIntent().getExtras().getInt("stepNum");
+        String activity = getIntent().getExtras().getString("class");
+        Log.d("intent class", activity);
 
+        if(activity.equals("Details")){
+            View v = stepsLV.getChildAt(completedStepNum -
+                    stepsLV.getFirstVisiblePosition());
+
+            Log.d("intent class2", activity);
+            if(v == null) return;
+
+            status = v.findViewById(R.id.status);
+            status.setText(statusText);
+            Log.d("intent class sts", statusText);
+
+        }
+*/
         new GetSteps().execute();
-
     }
+/*
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        Log.d("intent class code", String.valueOf(resultCode));
+
+        if(requestCode == 1){
+            if(resultCode == RESULT_OK){
+                statusText = data.getStringExtra("status");
+            }
+        }
+    }
+*/
     private class GetSteps extends AsyncTask<Void, Void, Void> {
 
         @Override
@@ -167,8 +200,8 @@ public class Chicken extends AppCompatActivity {
                     intent2.putExtra("name", recipeName);
                     tv1.setText(temp);
                     startActivity(intent2);
+//                    startActivityForResult(intent2, 1);
                     //finish();
-//                    Toast.makeText(MainActivity.this, recipeId, Toast.LENGTH_LONG).show();
                 }
             });
         }
