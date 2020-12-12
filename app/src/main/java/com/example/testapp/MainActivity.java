@@ -197,6 +197,9 @@ public class MainActivity extends AppCompatActivity {
                     String strId =  String.valueOf(recipeList.get(id).get("RecipeId"));
                     int recipeId = Integer.parseInt(strId);
 
+                    String name = String.valueOf(recipeList.get(id).get("name"));
+
+
                     /*switch(id) {
                         case 0:
                             Intent chicken = new Intent(MainActivity.this, Chicken.class);
@@ -224,6 +227,7 @@ public class MainActivity extends AppCompatActivity {
                     // Invoke new activity
                     Intent intent = new Intent(MainActivity.this, Chicken.class);
                     intent.putExtra("recipeId", recipeId);
+                    intent.putExtra("name", name);
                     startActivity(intent);
                     //finish();
 //                    Toast.makeText(MainActivity.this, recipeId, Toast.LENGTH_LONG).show();

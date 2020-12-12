@@ -41,6 +41,7 @@ public class Chicken extends AppCompatActivity {
     ArrayList<HashMap<String, Object>> stepsList;
     public static final String EXTRA_MESSAGE ="com.example.testapp.extra.MESSAGE";
     private String detailsText;
+    String recipeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +51,9 @@ public class Chicken extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
+        recipeName = getIntent().getExtras().getString("name");
         rID = getIntent().getExtras().getInt("recipeId");
         Log.e("the ID", String.valueOf(rID));
-
 
         stepsList = new ArrayList<>();
         stepsLV = (ListView)findViewById(R.id.stepList);
@@ -154,10 +154,11 @@ public class Chicken extends AppCompatActivity {
                     Log.e("bla","bla");
                     String details =  String.valueOf(stepsList.get(id).get("details"));
 
-
                     // Invoke new activity
                     Intent intent2 = new Intent(Chicken.this, Details.class);
                     intent2.putExtra("details", details);
+                    intent2.putExtra("position", id+1);
+                    intent2.putExtra("name", recipeName);
                     startActivity(intent2);
                     //finish();
 //                    Toast.makeText(MainActivity.this, recipeId, Toast.LENGTH_LONG).show();
