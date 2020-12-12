@@ -5,6 +5,18 @@
     android:layout_height="match_parent"
     tools:context=".Chicken">
 
+    <TextView
+        android:id="@+id/totalsteps"
+        android:text="Steps done = 0"
+        android:gravity="center"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="2dip"
+        android:paddingTop="6dip"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
     <ListView
         android:id="@+id/stepList"
         android:layout_width="fill_parent"

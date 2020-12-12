@@ -31,6 +31,8 @@ public class Details extends AppCompatActivity {
     private CountDownTimer countDownTimer;
     private  boolean timerRunning;
     private long timeLeft = startTime;  //in ms
+    private Button completedButton;
+    private int stepsDone = 0;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class Details extends AppCompatActivity {
         Log.e("the details", details);
         nameTextView.setText(recipeName);
         stepNumTextView.setText("Step: " + Integer.toString(stepNum));
+        completedButton = findViewById(R.id.completed);
 
         ActionBar actionBar = getActionBar();
         if (actionBar != null) {
@@ -88,6 +91,13 @@ public class Details extends AppCompatActivity {
 
         // Call timer with user inputted time
         timerFunctionality();
+        completedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+                return;
+            }
+        });
     }
 
     // Close keyboard

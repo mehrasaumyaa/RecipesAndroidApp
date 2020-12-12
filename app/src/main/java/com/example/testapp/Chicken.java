@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -42,6 +43,7 @@ public class Chicken extends AppCompatActivity {
     public static final String EXTRA_MESSAGE ="com.example.testapp.extra.MESSAGE";
     private String detailsText;
     String recipeName;
+    private int stepsDone = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,13 +154,18 @@ public class Chicken extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int id , long l) {
                     Log.e("bla","bla");
+                    stepsDone++;
+                    String temp = "Steps Done " + String.valueOf(stepsDone);
+                    TextView tv1 = (TextView)findViewById(R.id.totalsteps);
                     String details =  String.valueOf(stepsList.get(id).get("details"));
+
 
                     // Invoke new activity
                     Intent intent2 = new Intent(Chicken.this, Details.class);
                     intent2.putExtra("details", details);
                     intent2.putExtra("position", id+1);
                     intent2.putExtra("name", recipeName);
+                    tv1.setText(temp);
                     startActivity(intent2);
                     //finish();
 //                    Toast.makeText(MainActivity.this, recipeId, Toast.LENGTH_LONG).show();
